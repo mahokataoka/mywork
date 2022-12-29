@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Http\Requests\PostRequest;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PostController extends Controller
 {
+    use SoftDeletes;
+    
     public function index(Post $post)//インポートしたPostをインスタンス化して$postとして使用。
     {
     //return view('posts/index')->with(['posts' => $post->getByLimit()]);
@@ -39,6 +42,12 @@ class PostController extends Controller
         $input_post = $request['post'];
         $post->fill($input_post)->save();
         return redirect('/posts/' . $post->id);
+    }
+    
+    public function delete(Post $post)
+    {
+        $post->delete();
+        return redirect('/');
     }
 }
 
